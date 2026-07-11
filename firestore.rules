@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global catch-all default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Rules for Users collection
+    match /users/{userId} {
+      allow get: if isSignedIn(); // allow loading any developer profile for local reference or ranking
+      allow list: if isSignedIn(); // allow leaderboard searches
+      
+      allow create: if isOwner(userId)
+        && incoming().name is string
+        && incoming().email is string
+        && incoming().apiKey is string
+        && incoming().plan is string;
+
+      allow update: if isOwner(userId)
+        && incoming().apiKey is string
+        && incoming().plan is string;
+
+      allow delete: if isOwner(userId);
+    }
+
+    // Rules for Groups collection
+    match /groups/{groupId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && incoming().ownerId == request.auth.uid;
+      allow update: if isSignedIn() && existing().ownerId == request.auth.uid && incoming().ownerId == request.auth.uid;
+      allow delete: if isSignedIn() && existing().ownerId == request.auth.uid;
+    }
+  }
+}

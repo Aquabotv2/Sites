@@ -1,0 +1,6 @@
+{
+  "name": "PLUNDERER",
+  "description": "Console oficial e Painel de Controle Integrado do PLUNDERER API e PLUNDERER Bot (WhatsApp Bot control panel & API Gateway).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

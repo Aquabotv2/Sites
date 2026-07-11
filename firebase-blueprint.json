@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Perfil do desenvolvedor e atributos RPG integrados",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nome completo do desenvolvedor" },
+        "email": { "type": "string", "description": "E-mail cadastrado" },
+        "username": { "type": "string", "description": "Apelido ou nome de usuário pirata" },
+        "apiKey": { "type": "string", "description": "Token de acesso de API privado" },
+        "plan": { "type": "string", "description": "Plano de assinatura do console" },
+        "level": { "type": "number", "description": "Nível RPG do desenvolvedor" },
+        "xp": { "type": "number", "description": "Pontos de experiência acumulados" },
+        "gold": { "type": "number", "description": "Quantidade de moedas de ouro" },
+        "class": { "type": "string", "description": "Classe RPG: Barbarian, Mage, Rogue, Pirate" },
+        "health": { "type": "number", "description": "Pontos de vida atuais" },
+        "maxHealth": { "type": "number", "description": "Pontos de vida máximos" },
+        "strength": { "type": "number", "description": "Força física" },
+        "dexterity": { "type": "number", "description": "Destreza e agilidade" },
+        "intelligence": { "type": "number", "description": "Inteligência e mana" },
+        "vitality": { "type": "number", "description": "Constituição física e defesa" },
+        "weapon": { "type": "string", "description": "Arma ativa equipada" },
+        "shield": { "type": "string", "description": "Escudo ou acessório ativo" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Data de criação" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Data de atualização" }
+      },
+      "required": ["name", "email", "apiKey", "plan", "level", "xp", "gold"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "Dados de configuração e automação de grupos de WhatsApp",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Identificador único do grupo" },
+        "name": { "type": "string", "description": "Nome do grupo" },
+        "description": { "type": "string", "description": "Descrição do grupo" },
+        "welcomeMessage": { "type": "string", "description": "Mensagem de recepção de novos membros" },
+        "antiLink": { "type": "boolean", "description": "Bloquear envio de links de terceiros" },
+        "antiSpam": { "type": "boolean", "description": "Limitar envio repetitivo de mensagens" },
+        "antiFake": { "type": "boolean", "description": "Bloquear números estrangeiros fraudulentos" },
+        "membersCount": { "type": "number", "description": "Quantidade atual de participantes" },
+        "ownerId": { "type": "string", "description": "ID do usuário dono" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Data de criação" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Data de atualização" }
+      },
+      "required": ["id", "name", "antiLink", "antiSpam", "antiFake", "ownerId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Coleção principal de usuários desenvolvedores cadastrados"
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Configurações de grupos de WhatsApp gerenciados"
+    }
+  }
+}
